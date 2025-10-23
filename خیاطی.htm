@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>فرم سفارش مبل و صندلی</title>
+  <style>
+    body {
+      font-family: 'Tahoma', sans-serif;
+      background: #f9f9f9;
+      color: #222;
+      margin: 2rem;
+      line-height: 1.6;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #4a2c06;
+    }
+
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    label {
+      margin-top: 10px;
+      display: block;
+      font-weight: bold;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 6px;
+      margin-top: 4px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-family: inherit;
+      font-size: 14px;
+    }
+
+    .btn-area {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      background-color: #6b3e0d;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      margin: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .output {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      margin-top: 20px;
+      display: none;
+      direction: rtl;
+      font-size: 14px;
+    }
+
+    .output h3 {
+      color: #6b3e0d;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 5px;
+    }
+
+    hr {
+      margin: 20px 0;
+      border: 0;
+      border-top: 1px solid #ccc;
+    }
+
+    @media (max-width: 600px) {
+      form, .output {
+        margin: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>فرم ثبت و خروجی سفارش مبلمان</h1>
+  <form id="orderForm">
+    <h2>اطلاعات کلی سفارش</h2>
+    <label>نام مشتری:</label>
+    <input type="text" id="customer">
+    <label>شماره سفارش:</label>
+    <input type="text" id="orderId">
+    <label>توضیحات کلی:</label>
+    <textarea id="generalNote"></textarea>
+
+    <!-- بخش رنگ چوب -->
+    <h2>۱. اطلاعات رنگ چوب</h2>
+    <label>رنگ چوب:</label><input type="text" id="woodColor">
+    <label>نوع پوشش:</label><input type="text" id="finishType">
+    <label>تعداد قطعات چوبی:</label><input type="number" id="woodCount">
+    <label>آیتم خالی ۱:</label><input type="text" id="woodExtra1">
+    <label>آیتم خالی ۲:</label><input type="text" id="woodExtra2">
+    <label>آیتم خالی ۳:</label><input type="text" id="woodExtra3">
+    <label>آیتم خالی ۴:</label><input type="text" id="woodExtra4">
+    <label>توضیحات اضافه (رنگ چوب):</label><textarea id="woodDesc"></textarea>
+
+    <!-- بخش خیاطی -->
+    <h2>۲. اطلاعات خیاطی</h2>
+    <label>کد پارچه:</label><input type="text" id="fabricCode">
+    <label>رنگ پارچه:</label><input type="text" id="fabricColor">
+    <label>تعداد صندلی:</label><input type="number" id="chairCount">
+    <label>تعداد مبل:</label><input type="number" id="sofaCount">
+    <label>کوسن:</label><input type="text" id="sewingExtra1">
+    <label>آیتم خالی ۲:</label><input type="text" id="sewingExtra2">
+    <label>آیتم خالی ۳:</label><input type="text" id="sewingExtra3">
+    <label>توضیحات اضافه (خیاطی):</label><textarea id="sewingDesc"></textarea>
+
+    <!-- بخش نجاری -->
+    <h2>۳. اطلاعات نجاری</h2>
+    <label>مدل مبل:</label><input type="text" id="woodModel">
+    <label>تعداد مبل‌ها:</label><input type="number" id="woodSofaCount">
+    <label>آیتم خالی ۱:</label><input type="text" id="carpExtra1">
+    <label>آیتم خالی ۲:</label><input type="text" id="carpExtra2">
+    <label>آیتم خالی ۳:</label><input type="text" id="carpExtra3">
+    <label>آیتم خالی ۴:</label><input type="text" id="carpExtra4">
+    <label>توضیحات اضافه (نجاری):</label><textarea id="carpDesc"></textarea>
+
+    <!-- بخش روی‌کوبی -->
+    <h2>۴. اطلاعات روی‌کوبی</h2>
+    <label>مدل مبل:</label><input type="text" id="upModel">
+    <label>میز کنار مبل:</label><input type="text" id="upTable">
+    <label>پایه:</label><input type="text" id="upBase">
+    <label>صندلی:</label><input type="text" id="upChair">
+    <label>مبل:</label><input type="text" id="upSofa">
+    <label>کاناپه:</label><input type="text" id="upCouch">
+    <label>آیتم خالی ۱:</label><input type="text" id="upExtra1">
+    <label>آیتم خالی ۲:</label><input type="text" id="upExtra2">
+    <label>آیتم خالی ۳:</label><input type="text" id="upExtra3">
+    <label>توضیحات اضافه (روی‌کوبی):</label><textarea id="upDesc"></textarea>
+
+    <!-- بخش تحویل -->
+    <h2>۵. برگه تحویل</h2>
+    <label>نام مشتری:</label><input type="text" id="delCustomer">
+    <label>تاریخ تحویل:</label><input type="date" id="delDate">
+    <label>شماره تماس:</label><input type="text" id="delPhone">
+    <label>آدرس:</label><input type="text" id="delAddress">
+    <label>توضیحات اضافه (تحویل):</label><textarea id="delDesc"></textarea>
+
+    <div class="btn-area">
+      <button type="button" onclick="showSection('chob')">خروجی رنگ چوب</button>
+      <button type="button" onclick="showSection('khayat')">خروجی خیاطی</button>
+      <button type="button" onclick="showSection('najjar')">خروجی نجاری</button>
+      <button type="button" onclick="showSection('rokubi')">خروجی روی‌کوبی</button>
+      <button type="button" onclick="showSection('tahvil')">برگه تحویل</button>
+    </div>
+  </form>
+
+  <div id="output" class="output"></div>
+
+  <script>
+    function val(id) {
+      return document.getElementById(id)?.value || "";
+    }
+
+    function showSection(type) {
+      const out = document.getElementById("output");
+      let html = "";
+
+      if (type === "chob") {
+        html = `
+        <h3>برگه رنگ چوب</h3>
+        <p>رنگ چوب: ${val("woodColor")}</p>
+        <p>نوع پوشش: ${val("finishType")}</p>
+        <p>تعداد قطعات: ${val("woodCount")}</p>
+        <p>${val("woodExtra1")} ${val("woodExtra2")} ${val("woodExtra3")} ${val("woodExtra4")}</p>
+        <hr/><p><strong>توضیحات:</strong> ${val("woodDesc")}</p>`;
+      }
+      if (type === "khayat") {
+        html = `
+        <h3>برگه خیاطی</h3>
+        <p>کد پارچه: ${val("fabricCode")}</p>
+        <p>رنگ پارچه: ${val("fabricColor")}</p>
+        <p>تعداد صندلی: ${val("chairCount")}</p>
+        <p>تعداد مبل: ${val("sofaCount")}</p>
+        <p>${val("sewingExtra1")} ${val("sewingExtra2")} ${val("sewingExtra3")}</p>
+        <hr/><p><strong>توضیحات:</strong> ${val("sewingDesc")}</p>`;
+      }
+      if (type === "najjar") {
+        html = `
+        <h3>برگه نجاری</h3>
+        <p>مدل مبل: ${val("woodModel")}</p>
+        <p>تعداد مبل‌ها: ${val("woodSofaCount")}</p>
+        <p>${val("carpExtra1")} ${val("carpExtra2")} ${val("carpExtra3")} ${val("carpExtra4")}</p>
+        <hr/><p><strong>توضیحات:</strong> ${val("carpDesc")}</p>`;
+      }
+      if (type === "rokubi") {
+        html = `
+        <h3>برگه روی‌کوبی</h3>
+        <p>مدل مبل: ${val("upModel")}</p>
+        <p>میز کنار مبل: ${val("upTable")}</p>
+        <p>پایه: ${val("upBase")}</p>
+        <p>صندلی: ${val("upChair")}</p>
+        <p>مبل: ${val("upSofa")}</p>
+        <p>کاناپه: ${val("upCouch")}</p>
+        <p>${val("upExtra1")} ${val("upExtra2")} ${val("upExtra3")}</p>
+        <hr/><p><strong>توضیحات:</strong> ${val("upDesc")}</p>`;
+      }
+      if (type === "tahvil") {
+        html = `
+        <h3>برگه تحویل مشتری</h3>
+        <p>نام مشتری: ${val("delCustomer")}</p>
+        <p>تاریخ تحویل: ${val("delDate")}</p>
+        <p>شماره تماس: ${val("delPhone")}</p>
+        <p>آدرس: ${val("delAddress")}</p>
+        <hr/><p><strong>توضیحات:</strong> ${val("delDesc")}</p>`;
+      }
+
+      out.innerHTML = html + '<div class="btn-area"><button onclick="window.print()">چاپ</button></div>';
+      out.style.display = "block";
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+  </script>
+</body>
+</html>
