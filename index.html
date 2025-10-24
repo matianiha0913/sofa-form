@@ -1,272 +1,268 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>مدیریت سفارش‌های مبلمان</title>
-    <style>
-        @font-face {
-            font-family: 'IranSans';
-            src: url('https://cdn.font.ir/fonts/IRANSans/web/IRANSans.woff') format('woff');
-            font-weight: normal;
-            font-style: normal;
-        }
-        body {
-            font-family: 'IranSans', sans-serif;
-            background-color: #000000;
-            color: #00FF00;
-            padding: 20px;
-            direction: rtl;
-        }
-        input, textarea, button {
-            font-family: 'IranSans', sans-serif;
-            background-color: #111111;
-            color: #00FF00;
-            border: 1px solid #00FF00;
-            padding: 10px;
-            margin: 5px;
-        }
-        .form-section {
-            margin-bottom: 20px;
-        }
-        .output {
-            background-color: #111111;
-            padding: 20px;
-            border: 1px solid #00FF00;
-            margin-top: 20px;
-            display: none;
-        }
-        .orders-list {
-            margin-top: 20px;
-        }
-        .order-item {
-            background-color: #111111;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #00FF00;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مدیریت سفارش مبل و صندلی</title>
+  <style>
+    @font-face {
+      font-family: 'IranSans';
+      src: local('IranSans'), url('fonts/IRANSans.ttf') format('truetype');
+    }
+
+    body {
+      font-family: 'IranSans', Tahoma, sans-serif;
+      background-color: #0b0b0b;
+      color: #d0ffd0;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #00ff99;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 20px auto;
+      background: #111;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 0 15px #033;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      color: #b8ffb8;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 6px;
+      border-radius: 6px;
+      border: 1px solid #066;
+      background: #191919;
+      color: #b8ffb8;
+      font-family: inherit;
+    }
+
+    textarea {
+      min-height: 60px;
+    }
+
+    .btn {
+      background: #00ff99;
+      color: black;
+      padding: 8px 12px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .btn:hover {
+      background: #00cc77;
+    }
+
+    .list {
+      margin-top: 20px;
+      background: #141414;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .order-item {
+      padding: 8px;
+      border-bottom: 1px solid #033;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .order-item div {
+      flex-grow: 1;
+    }
+
+    .section {
+      margin-top: 10px;
+    }
+
+    .output {
+      background: #111;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 20px;
+      display: none;
+      color: #b8ffb8;
+    }
+
+    .output h3 {
+      color: #00ff99;
+      border-bottom: 1px solid #044;
+      padding-bottom: 5px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 10px;
+        margin: 5px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <h1>مدیریت سفارش‌های مبلمان</h1>
-    
-    <div class="form-section">
-        <h2>ثبت سفارش جدید</h2>
-        <form id="orderForm">
-            <!-- فیلدهای عمومی -->
-            <label>مدل مبل:</label><input type="text" id="model" required><br>
-            <label>تعداد مبل:</label><input type="number" id="sofaCount" required><br>
-            <label>تعداد صندلی:</label><input type="number" id="chairCount" required><br>
-            <label>تعداد کاناپه:</label><input type="number" id="kanapeCount"><br>
-            <label>تعداد میز کنار مبل:</label><input type="number" id="sideTableCount"><br>
-            <label>تعداد پایه:</label><input type="number" id="baseCount"><br>
-            <label>کد پارچه:</label><input type="text" id="fabricCode"><br>
-            <label>رنگ پارچه:</label><input type="text" id="fabricColor"><br>
-            <label>رنگ چوب:</label><input type="text" id="woodColor"><br>
-            <label>نام مشتری:</label><input type="text" id="customerName"><br>
-            <label>لوگو (اختیاری):</label><input type="text" id="logo"><br>
-            
-            <!-- فیلدهای خالی اضافی برای هر بخش -->
-            <h3>فیلدهای خالی برای صندلی (4 تا):</h3>
-            <input type="text" id="chairExtra1" placeholder="آیتم خالی 1"><br>
-            <input type="text" id="chairExtra2" placeholder="آیتم خالی 2"><br>
-            <input type="text" id="chairExtra3" placeholder="آیتم خالی 3"><br>
-            <input type="text" id="chairExtra4" placeholder="آیتم خالی 4"><br>
-            
-            <h3>فیلدهای خالی برای خیاطی (3 تا):</h3>
-            <input type="text" id="tailorExtra1" placeholder="آیتم خالی 1"><br>
-            <input type="text" id="tailorExtra2" placeholder="آیتم خالی 2"><br>
-            <input type="text" id="tailorExtra3" placeholder="آیتم خالی 3"><br>
-            
-            <h3>فیلدهای خالی برای نجاری (4 تا):</h3>
-            <input type="text" id="carpentryExtra1" placeholder="آیتم خالی 1"><br>
-            <input type="text" id="carpentryExtra2" placeholder="آیتم خالی 2"><br>
-            <input type="text" id="carpentryExtra3" placeholder="آیتم خالی 3"><br>
-            <input type="text" id="carpentryExtra4" placeholder="آیتم خالی 4"><br>
-            
-            <h3>فیلدهای خالی برای روی‌کوبی (3 تا):</h3>
-            <input type="text" id="upholsteryExtra1" placeholder="آیتم خالی 1"><br>
-            <input type="text" id="upholsteryExtra2" placeholder="آیتم خالی 2"><br>
-            <input type="text" id="upholsteryExtra3" placeholder="آیتم خالی 3"><br>
-            
-            <button type="button" onclick="saveOrder()">ذخیره سفارش</button>
-        </form>
+  <div class="container">
+    <h1>📋 سیستم مدیریت سفارش مبل و صندلی</h1>
+
+    <h2>افزودن سفارش جدید</h2>
+    <div id="form">
+      <label>نام مشتری:</label><input id="customer">
+      <label>شماره سفارش:</label><input id="orderId">
+      <label>توضیحات کلی:</label><textarea id="note"></textarea>
+
+      <h3>۱. چوب‌کاری</h3>
+      <input placeholder="رنگ چوب" id="woodColor">
+      <input placeholder="نوع پوشش" id="woodFinish">
+      <input placeholder="تعداد قطعات چوبی" id="woodCount">
+      <input placeholder="آیتم خالی 1" id="woodEx1">
+      <input placeholder="آیتم خالی 2" id="woodEx2">
+
+      <h3>۲. خیاطی</h3>
+      <input placeholder="کد پارچه" id="fabCode">
+      <input placeholder="رنگ پارچه" id="fabColor">
+      <input placeholder="تعداد صندلی" id="fabChair">
+      <input placeholder="تعداد مبل" id="fabSofa">
+
+      <h3>۳. نجاری</h3>
+      <input placeholder="مدل مبل" id="carpModel">
+      <input placeholder="تعداد مبل‌ها" id="carpCount">
+      <input placeholder="آیتم خالی 1" id="carp1">
+      <input placeholder="آیتم خالی 2" id="carp2">
+
+      <h3>۴. روی‌کوبی</h3>
+      <input placeholder="مدل مبل" id="upModel">
+      <input placeholder="میز کنار مبل" id="upTable">
+      <input placeholder="پایه" id="upBase">
+      <input placeholder="مبل" id="upSofa">
+
+      <h3>۵. برگه تحویل</h3>
+      <input placeholder="تاریخ تحویل" id="delDate" type="date">
+      <textarea placeholder="آدرس و توضیحات تحویل" id="delAddress"></textarea>
+
+      <button class="btn" onclick="saveOrder()">ذخیره سفارش</button>
     </div>
-    
-    <div class="orders-list">
-        <h2>سفارش‌های قبلی</h2>
-        <div id="ordersContainer"></div>
-    </div>
-    
-    <script>
-        let orders = JSON.parse(localStorage.getItem('orders')) || [];
-        
-        function saveOrder() {
-            const order = {
-                model: document.getElementById('model').value,
-                sofaCount: document.getElementById('sofaCount').value,
-                chairCount: document.getElementById('chairCount').value,
-                kanapeCount: document.getElementById('kanapeCount').value,
-                sideTableCount: document.getElementById('sideTableCount').value,
-                baseCount: document.getElementById('baseCount').value,
-                fabricCode: document.getElementById('fabricCode').value,
-                fabricColor: document.getElementById('fabricColor').value,
-                woodColor: document.getElementById('woodColor').value,
-                customerName: document.getElementById('customerName').value,
-                logo: document.getElementById('logo').value,
-                chairExtra1: document.getElementById('chairExtra1').value,
-                chairExtra2: document.getElementById('chairExtra2').value,
-                chairExtra3: document.getElementById('chairExtra3').value,
-                chairExtra4: document.getElementById('chairExtra4').value,
-                tailorExtra1: document.getElementById('tailorExtra1').value,
-                tailorExtra2: document.getElementById('tailorExtra2').value,
-                tailorExtra3: document.getElementById('tailorExtra3').value,
-                carpentryExtra1: document.getElementById('carpentryExtra1').value,
-                carpentryExtra2: document.getElementById('carpentryExtra2').value,
-                carpentryExtra3: document.getElementById('carpentryExtra3').value,
-                carpentryExtra4: document.getElementById('carpentryExtra4').value,
-                upholsteryExtra1: document.getElementById('upholsteryExtra1').value,
-                upholsteryExtra2: document.getElementById('upholsteryExtra2').value,
-                upholsteryExtra3: document.getElementById('upholsteryExtra3').value
-            };
-            orders.push(order);
-            localStorage.setItem('orders', JSON.stringify(orders));
-            loadOrders();
-            document.getElementById('orderForm').reset();
-            alert('سفارش ذخیره شد!');
-        }
-        
-        function loadOrders() {
-            const container = document.getElementById('ordersContainer');
-            container.innerHTML = '';
-            orders.forEach((order, index) => {
-                const div = document.createElement('div');
-                div.className = 'order-item';
-                div.innerHTML = `
-                    <h3>سفارش ${index + 1}</h3>
-                    <p>مدل مبل: ${order.model}</p>
-                    <button onclick="generateOutput(${index}, 'chair')">خروجی صندلی</button>
-                    <button onclick="generateOutput(${index}, 'tailor')">خروجی خیاطی</button>
-                    <button onclick="generateOutput(${index}, 'carpentry')">خروجی نجاری</button>
-                    <button onclick="generateOutput(${index}, 'upholstery')">خروجی روی‌کوبی</button>
-                    <button onclick="generateOutput(${index}, 'delivery')">خروجی تحویل</button>
-                    <button onclick="generateOutput(${index}, 'wood')">خروجی رنگ چوب</button>
-                `;
-                container.appendChild(div);
-            });
-        }
-        
-        function generateOutput(index, type) {
-            const order = orders[index];
-            let content = '';
-            
-            if (type === 'chair') {
-                content = `
-                    <h2>خروجی صندلی</h2>
-                    <p>تعداد صندلی: ${order.chairCount}</p>
-                    <p>آیتم خالی 1: ${order.chairExtra1}</p>
-                    <p>آیتم خالی 2: ${order.chairExtra2}</p>
-                    <p>آیتم خالی 3: ${order.chairExtra3}</p>
-                    <p>آیتم خالی 4: ${order.chairExtra4}</p>
-                `;
-            } else if (type === 'tailor') {
-                content = `
-                    <h2>خروجی خیاطی</h2>
-                    <p>کد پارچه: ${order.fabricCode}</p>
-                    <p>رنگ پارچه: ${order.fabricColor}</p>
-                    <p>تعداد صندلی: ${order.chairCount}</p>
-                    <p>تعداد مبل: ${order.sofaCount}</p>
-                    <p>آیتم خالی 1: ${order.tailorExtra1}</p>
-                    <p>آیتم خالی 2: ${order.tailorExtra2}</p>
-                    <p>آیتم خالی 3: ${order.tailorExtra3}</p>
-                `;
-            } else if (type === 'carpentry') {
-                content = `
-                    <h2>خروجی نجاری</h2>
-                    <p>مدل مبل: ${order.model}</p>
-                    <p>تعداد هر کدام از مبل‌ها: ${order.sofaCount}</p>
-                    <p>آیتم خالی 1: ${order.carpentryExtra1}</p>
-                    <p>آیتم خالی 2: ${order.carpentryExtra2}</p>
-                    <p>آیتم خالی 3: ${order.carpentryExtra3}</p>
-                    <p>آیتم خالی 4: ${order.carpentryExtra4}</p>
-                `;
-            } else if (type === 'upholstery') {
-                content = `
-                    <h2>خروجی روی‌کوبی</h2>
-                    <p>مدل مبل: ${order.model}</p>
-                    <p>میز کنار مبل: ${order.sideTableCount}</p>
-                    <p>پایه: ${order.baseCount}</p>
-                    <p>صندلی: ${order.chairCount}</p>
-                    <p>مبل: ${order.sofaCount}</p>
-                    <p>کاناپه: ${order.kanapeCount}</p>
-                    <p>آیتم خالی 1: ${order.upholsteryExtra1}</p>
-                    <p>آیتم خالی 2: ${order.upholsteryExtra2}</p>
-                    <p>آیتم خالی 3: ${order.upholsteryExtra3}</p>
-                `;
-            } else if (type === 'delivery') {
-                content = `
-                    <h2>خروجی تحویل</h2>
-                    <p>نام مشتری: ${order.customerName}</p>
-                    <p>لوگو: ${order.logo}</p>
-                    <p>مدل مبل: ${order.model}</p>
-                    <p>تعداد مبل: ${order.sofaCount}</p>
-                    <p>تعداد صندلی: ${order.chairCount}</p>
-                    <p>تعداد کاناپه: ${order.kanapeCount}</p>
-                    <p>تعداد میز کنار مبل: ${order.sideTableCount}</p>
-                    <p>تعداد پایه: ${order.baseCount}</p>
-                    <p>کد پارچه: ${order.fabricCode}</p>
-                    <p>رنگ پارچه: ${order.fabricColor}</p>
-                    <p>رنگ چوب: ${order.woodColor}</p>
-                    <!-- فیلدهای خالی اضافی -->
-                    <p>آیتم خالی صندلی 1: ${order.chairExtra1}</p>
-                    <p>آیتم خالی صندلی 2: ${order.chairExtra2}</p>
-                    <p>آیتم خالی صندلی 3: ${order.chairExtra3}</p>
-                    <p>آیتم خالی صندلی 4: ${order.chairExtra4}</p>
-                    <p>آیتم خالی خیاطی 1: ${order.tailorExtra1}</p>
-                    <p>آیتم خالی خیاطی 2: ${order.tailorExtra2}</p>
-                    <p>آیتم خالی خیاطی 3: ${order.tailorExtra3}</p>
-                    <p>آیتم خالی نجاری 1: ${order.carpentryExtra1}</p>
-                    <p>آیتم خالی نجاری 2: ${order.carpentryExtra2}</p>
-                    <p>آیتم خالی نجاری 3: ${order.carpentryExtra3}</p>
-                    <p>آیتم خالی نجاری 4: ${order.carpentryExtra4}</p>
-                    <p>آیتم خالی روی‌کوبی 1: ${order.upholsteryExtra1}</p>
-                    <p>آیتم خالی روی‌کوبی 2: ${order.upholsteryExtra2}</p>
-                    <p>آیتم خالی روی‌کوبی 3: ${order.upholsteryExtra3}</p>
-                `;
-            } else if (type === 'wood') {
-                content = `
-                    <h2>خروجی رنگ چوب</h2>
-                    <p>رنگ چوب: ${order.woodColor}</p>
-                `;
-            }
-            
-            const outputDiv = document.createElement('div');
-            outputDiv.className = 'output';
-            outputDiv.innerHTML = content + `
-                <button onclick="printOutput(this.parentNode)">پرینت</button>
-                <button onclick="shareOutput(this.parentNode)">اشتراک‌گذاری (کپی متن)</button>
-            `;
-            document.body.appendChild(outputDiv);
-            outputDiv.style.display = 'block';
-        }
-        
-        function printOutput(element) {
-            const printWindow = window.open('', '', 'height=500, width=800');
-            printWindow.document.write('<html><head><title>خروجی</title></head><body dir="rtl">');
-            printWindow.document.write(element.innerHTML);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.print();
-        }
-        
-        function shareOutput(element) {
-            const text = element.innerText;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('متن کپی شد! حالا می‌توانید در واتساپ یا شبکه‌های اجتماعی پیست کنید.');
-            });
-        }
-        
-        loadOrders();
-    </script>
+
+    <h2>📦 لیست سفارش‌ها</h2>
+    <div id="orderList" class="list"></div>
+
+    <div id="output" class="output"></div>
+  </div>
+
+  <script>
+    let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+    const orderList = document.getElementById('orderList');
+    const outputBox = document.getElementById('output');
+
+    function saveOrder() {
+      const order = {
+        id: document.getElementById("orderId").value,
+        customer: document.getElementById("customer").value,
+        note: document.getElementById("note").value,
+        woodColor: document.getElementById("woodColor").value,
+        woodFinish: document.getElementById("woodFinish").value,
+        woodCount: document.getElementById("woodCount").value,
+        fabCode: document.getElementById("fabCode").value,
+        fabColor: document.getElementById("fabColor").value,
+        fabChair: document.getElementById("fabChair").value,
+        fabSofa: document.getElementById("fabSofa").value,
+        carpModel: document.getElementById("carpModel").value,
+        carpCount: document.getElementById("carpCount").value,
+        upModel: document.getElementById("upModel").value,
+        upTable: document.getElementById("upTable").value,
+        upBase: document.getElementById("upBase").value,
+        upSofa: document.getElementById("upSofa").value,
+        delDate: document.getElementById("delDate").value,
+        delAddress: document.getElementById("delAddress").value
+      };
+      orders.push(order);
+      localStorage.setItem("orders", JSON.stringify(orders));
+      renderOrders();
+      alert("✅ سفارش ذخیره شد");
+    }
+
+    function renderOrders() {
+      orderList.innerHTML = '';
+      orders.forEach((o, i) => {
+        const div = document.createElement("div");
+        div.className = "order-item";
+        div.innerHTML = `
+          <div><strong>${o.customer}</strong> | شماره: ${o.id}</div>
+          <div>
+            <button class="btn" onclick="showSection(${i}, 'wood')">چوب</button>
+            <button class="btn" onclick="showSection(${i}, 'fab')">خیاطی</button>
+            <button class="btn" onclick="showSection(${i}, 'carp')">نجاری</button>
+            <button class="btn" onclick="showSection(${i}, 'up')">روی‌کوبی</button>
+            <button class="btn" onclick="showSection(${i}, 'del')">تحویل</button>
+          </div>`;
+        orderList.appendChild(div);
+      });
+    }
+
+    function showSection(i, type) {
+      const o = orders[i];
+      let html = '';
+
+      if (type === 'wood') html = `
+        <h3>برگه چوب‌کاری</h3>
+        <p>رنگ: ${o.woodColor}</p>
+        <p>پوشش: ${o.woodFinish}</p>
+        <p>تعداد: ${o.woodCount}</p>
+        <p>یادداشت: ${o.note}</p>`;
+
+      if (type === 'fab') html = `
+        <h3>برگه خیاطی</h3>
+        <p>کد پارچه: ${o.fabCode}</p>
+        <p>رنگ پارچه: ${o.fabColor}</p>
+        <p>تعداد صندلی: ${o.fabChair}</p>
+        <p>تعداد مبل: ${o.fabSofa}</p>`;
+
+      if (type === 'carp') html = `
+        <h3>برگه نجاری</h3>
+        <p>مدل: ${o.carpModel}</p>
+        <p>تعداد مبل‌ها: ${o.carpCount}</p>`;
+
+      if (type === 'up') html = `
+        <h3>برگه روی‌کوبی</h3>
+        <p>مدل: ${o.upModel}</p>
+        <p>میز کنار مبل: ${o.upTable}</p>
+        <p>پایه: ${o.upBase}</p>
+        <p>مبل: ${o.upSofa}</p>`;
+
+      if (type === 'del') html = `
+        <h3>برگه تحویل</h3>
+        <p>مشتری: ${o.customer}</p>
+        <p>تاریخ تحویل: ${o.delDate}</p>
+        <p>آدرس: ${o.delAddress}</p>`;
+
+      outputBox.innerHTML = html + `
+        <div style="text-align:center;margin-top:10px;">
+          <button class='btn' onclick='window.print()'>🖨 چاپ</button>
+          <button class='btn' onclick='sendWhatsApp(${i},"${type}")'>📤 ارسال واتساپ</button>
+        </div>`;
+      outputBox.style.display = 'block';
+      window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    function sendWhatsApp(i, type) {
+      const o = orders[i];
+      const msg = encodeURIComponent(`برگه ${type} برای سفارش ${o.customer}\nکد: ${o.id}`);
+      window.open(`https://wa.me/?text=${msg}`, "_blank");
+    }
+
+    renderOrders();
+  </script>
 </body>
 </html>
