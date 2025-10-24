@@ -5,14 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Matiani | سیستم مدیریت سفارش</title>
 <style>
-body { font-family: Tahoma,sans-serif; background:#fff; color:#000; margin:0; padding:0; }
-h1,h2,h3{text-align:center;color:#000;}
-.container {max-width:950px;margin:20px auto;background:#fff;border-radius:10px;border:2px solid #000;box-shadow:0 0 10px #000;padding:20px;}
+body{font-family:Tahoma,sans-serif;margin:0;padding:0;background:#fff;color:#000;}
+h1,h2,h3{text-align:center;}
+h1 span{color:#0f0;}
+.container{max-width:950px;margin:20px auto;background:#fff;border-radius:10px;border:2px solid #000;padding:20px;}
 label{display:block;font-weight:bold;margin-top:10px;}
-input,textarea{width:96%;padding:6px;border-radius:5px;border:1px solid #000;margin-top:4px;font-family:inherit;}
+input,textarea{width:96%;padding:6px;border-radius:5px;border:1px solid #000;margin-top:4px;}
 textarea{min-height:60px;}
-.btn{background:#000;color:#fff;padding:8px 14px;margin:5px;border:none;border-radius:5px;cursor:pointer;font-weight:bold;}
-.btn:hover{background:#333;}
+.btn{background:#0f0;color:#000;padding:8px 14px;margin:5px;border:none;border-radius:5px;cursor:pointer;font-weight:bold;}
+.btn:hover{background:#0c0;}
 .section{border:2px solid #000;border-radius:8px;margin-top:15px;padding:10px;background:#f9f9f9;}
 .output{border:2px solid #000;border-radius:8px;margin-top:15px;padding:10px;background:#fff;color:#000;display:none;}
 .hidden{display:none;}
@@ -20,93 +21,115 @@ textarea{min-height:60px;}
 </style>
 </head>
 <body>
-<div class="container">
-<h1>🛋 Matiani | سیستم مدیریت سفارش مبل و صندلی</h1>
 
+<!-- صفحه ورود امن -->
+<div class="container" id="loginDiv">
+<h1>🛋 <span>Matiani</span> | ورود به سیستم</h1>
+<label>کد ورود</label>
+<input type="text" id="loginCode" placeholder="کد یک‌بار مصرف خود را وارد کنید">
+<button class="btn" onclick="login()">ورود</button>
+</div>
+
+<!-- فرم اصلی سفارش -->
+<div class="container hidden" id="mainDiv">
+
+<label>شماره فاکتور</label><input id="invoiceNo" placeholder="مثلاً 1001">
 <label>نام مشتری</label><input id="customer">
-<label>مدل</label><input id="model">
-<label>تاریخ تحویل (YYYY-MM-DD)</label><input id="delDate" type="text" placeholder="مثلاً 1403-12-20">
-<label>تصویر مدل مبل</label><input id="modelImg" type="file" accept="image/*">
+<label>مدل مبل</label><input id="model">
+<label>تاریخ تحویل</label><input id="delDate" placeholder="YYYY-MM-DD">
 
 <div class="section" id="paintSection">
 <h3>۱. رنگ‌کاری</h3>
-<div class="paint-item"><input placeholder="رنگ کار" class="paintColor"><input placeholder="نوع پوشش یا لاک" class="paintFinish"><textarea placeholder="توضیحات رنگ‌کاری" class="paintNote"></textarea></div>
+<div class="paint-item"><input placeholder="رنگ کار" class="paintColor"></div>
 <button class="btn" onclick="addField('paint')">➕</button>
 </div>
 
 <div class="section" id="fabSection">
 <h3>۲. خیاطی</h3>
-<div class="fab-item"><input placeholder="کد پارچه" class="fabCode"><input placeholder="رنگ پارچه" class="fabColor"><textarea placeholder="شرح تفصیلی پارچه، کوسن و موارد دیگر..." class="fabNote"></textarea></div>
+<div class="fab-item"><input placeholder="کد/رنگ پارچه" class="fabColor"></div>
 <button class="btn" onclick="addField('fab')">➕</button>
 </div>
 
 <div class="section" id="carpSection">
 <h3>۳. نجاری</h3>
-<div class="carp-item"><input placeholder="مدل مبل" class="carpModel"><textarea placeholder="توضیحات کار نجاری" class="carpNote"></textarea></div>
+<div class="carp-item"><input placeholder="مدل مبل" class="carpModel"></div>
 <button class="btn" onclick="addField('carp')">➕</button>
 </div>
 
 <div class="section" id="upSection">
 <h3>۴. روی‌کوبی</h3>
-<div class="up-item"><textarea placeholder="توضیحات روی‌کوبی" class="upNote"></textarea></div>
+<div class="up-item"><input placeholder="توضیحات" class="upNote"></div>
 <button class="btn" onclick="addField('up')">➕</button>
 </div>
 
 <div class="section">
 <h3>۵. تحویل کالا</h3>
-<textarea placeholder="آدرس و توضیحات تحویل" id="delNote"></textarea>
+<textarea id="delNote" placeholder="آدرس و توضیحات تحویل"></textarea>
 </div>
 
+<div style="text-align:center;">
 <button class="btn" onclick="saveOrder()">💾 ذخیره سفارش</button>
-<button class="btn" onclick="toggleOrders()">📋 نمایش سفارش‌ها</button>
+<button class="btn" onclick="toggleOrders()">📋 نمایش/جستجو سفارش‌ها</button>
+<input type="text" id="searchInput" placeholder="جستجو: شماره فاکتور، نام، مدل" oninput="renderOrders()">
+</div>
 
 <div id="orderList" class="section hidden"></div>
 <div id="output" class="output"></div>
 </div>
 
 <script>
-const BACKEND_URL='https://YOUR_VERCEL_APP/api/saveOrder'; // بعد از دیپلوی Vercel این URL را جایگزین کن
-let orders = [];
+const BACKEND_URL='https://YOUR_VERCEL_APP/api/saveOrder';
+let orders=[];
+
+async function login(){
+  const code=document.getElementById('loginCode').value.trim();
+  if(!code) return alert('لطفاً کد را وارد کنید');
+  try{
+    const res=await fetch('https://YOUR_VERCEL_APP/api/login',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({code})
+    });
+    const data=await res.json();
+    if(data.ok){
+      document.getElementById('loginDiv').classList.add('hidden');
+      document.getElementById('mainDiv').classList.remove('hidden');
+      loadOrders();
+    }else alert('کد نامعتبر است');
+  }catch(e){alert('خطا در اتصال به سرور');}
+}
 
 async function loadOrders(){
   try{
-    const res = await fetch(BACKEND_URL);
-    if(res.ok){ orders = await res.json(); localStorage.setItem('orders',JSON.stringify(orders)); return; }
+    const res=await fetch(BACKEND_URL);
+    if(res.ok){orders=await res.json();localStorage.setItem('orders',JSON.stringify(orders));return;}
   }catch{}
-  orders = JSON.parse(localStorage.getItem("orders")||"[]");
+  orders=JSON.parse(localStorage.getItem('orders')||"[]");
 }
-loadOrders();
 
 function addField(type){
-  const section=document.getElementById(type+'Section');
-  let html='';
-  if(type==='paint') html=`<div class='paint-item'><input placeholder='رنگ کار' class='paintColor'><input placeholder='نوع پوشش یا لاک' class='paintFinish'><textarea placeholder='توضیحات رنگ‌کاری' class='paintNote'></textarea></div>`;
-  if(type==='fab') html=`<div class='fab-item'><input placeholder='کد پارچه' class='fabCode'><input placeholder='رنگ پارچه' class='fabColor'><textarea placeholder='شرح تفصیلی پارچه، کوسن...' class='fabNote'></textarea></div>`;
-  if(type==='carp') html=`<div class='carp-item'><input placeholder='مدل مبل' class='carpModel'><textarea placeholder='توضیحات کار نجاری' class='carpNote'></textarea></div>`;
-  if(type==='up') html=`<div class='up-item'><textarea placeholder='توضیحات روی‌کوبی' class='upNote'></textarea></div>`;
+  let section=document.getElementById(type+'Section'); let html='';
+  if(type==='paint') html=`<div class='paint-item'><input placeholder='رنگ کار' class='paintColor'></div>`;
+  if(type==='fab') html=`<div class='fab-item'><input placeholder='کد/رنگ پارچه' class='fabColor'></div>`;
+  if(type==='carp') html=`<div class='carp-item'><input placeholder='مدل مبل' class='carpModel'></div>`;
+  if(type==='up') html=`<div class='up-item'><input placeholder='توضیحات' class='upNote'></div>`;
   section.insertAdjacentHTML('beforeend',html);
 }
 
-function collect(selector,fields){
-  return [...document.querySelectorAll(selector)].map(div=>{
-    let obj={};
-    fields.forEach(f=>{const el=div.querySelector('.'+f); if(el) obj[f]=el.value.trim();});
-    return obj;
-  });
-}
-
+function collect(selector,field){return [...document.querySelectorAll(selector)].map(el=>el.querySelector('input.'+field)?.value.trim()).filter(Boolean);}
 function val(id){return document.getElementById(id).value.trim();}
 
 async function saveOrder(){
-  const order={
+  let order={
+    invoiceNo:val('invoiceNo'),
     customer:val('customer'),
     model:val('model'),
     delDate:val('delDate'),
     delNote:val('delNote'),
-    paint:collect('.paint-item',['paintColor','paintFinish','paintNote']),
-    fab:collect('.fab-item',['fabCode','fabColor','fabNote']),
-    carp:collect('.carp-item',['carpModel','carpNote']),
-    up:collect('.up-item',['upNote'])
+    paint:collect('.paint-item','paintColor'),
+    fab:collect('.fab-item','fabColor'),
+    carp:collect('.carp-item','carpModel'),
+    up:collect('.up-item','upNote')
   };
   orders.push(order);
   localStorage.setItem('orders',JSON.stringify(orders));
@@ -116,34 +139,45 @@ async function saveOrder(){
   alert('✅ سفارش ذخیره شد');
 }
 
-function clearForm(){
-  document.querySelectorAll('input,textarea').forEach(el=>{if(el.type!=='file')el.value='';});
-  document.getElementById('customer').focus();
-}
-
-function toggleOrders(){document.getElementById('orderList').classList.toggle('hidden'); renderOrders();}
+function clearForm(){document.querySelectorAll('input,textarea').forEach(el=>{if(el.type!=='file')el.value='';});document.getElementById('invoiceNo').focus();}
+function toggleOrders(){document.getElementById('orderList').classList.toggle('hidden');renderOrders();}
+function formatArray(arr){return arr.join('<br>');}
 
 function renderOrders(){
-  const listDiv=document.getElementById('orderList');
-  if(orders.length===0){listDiv.innerHTML='<p>هیچ سفارشی ثبت نشده است.</p>';return;}
-  listDiv.innerHTML=orders.map((o,i)=>`<div style='border:1px solid #000;padding:8px;margin-bottom:8px;'><b>${o.customer}</b> | مدل: ${o.model} | تاریخ تحویل: ${o.delDate}<br><div style='margin-top:6px;'><button class='btn' onclick="showSection(${i},'summary')">📄 مشاهده برگه تحویل کالا</button></div></div>`).join('');
+  let listDiv=document.getElementById('orderList');
+  let search=document.getElementById('searchInput').value.toLowerCase();
+  let filtered=orders.filter(o=>o.invoiceNo.toLowerCase().includes(search) || o.customer.toLowerCase().includes(search) || o.model.toLowerCase().includes(search));
+  if(filtered.length===0){listDiv.innerHTML='<p>هیچ سفارشی یافت نشد.</p>';return;}
+  listDiv.innerHTML=filtered.map((o,i)=>`
+  <div style='border:1px solid #000;padding:8px;margin-bottom:8px;'>
+  <b>#${o.invoiceNo} | ${o.customer}</b> | مدل: ${o.model} | تاریخ تحویل: ${o.delDate}
+  <div style='margin-top:6px;'>
+  <button class='btn' onclick="showSection(${i},'paint')">🎨 رنگ‌کاری</button>
+  <button class='btn' onclick="showSection(${i},'fab')">🧵 خیاطی</button>
+  <button class='btn' onclick="showSection(${i},'carp')">🪓 نجاری</button>
+  <button class='btn' onclick="showSection(${i},'up')">🛠 روی‌کوبی</button>
+  <button class='btn' onclick="showSection(${i},'del')">🚚 تحویل کالا</button>
+  </div></div>`).join('');
 }
-
-function formatArray(arr){return arr.map(a=>Object.values(a).filter(Boolean).join(' | ')).join('<hr>');}
 
 function showSection(i,type){
   const o=orders[i];let html='';
-  html+=`<h3>برگه تحویل کالا</h3><table style='width:100%;border-collapse:collapse;border:1px solid #000;'>`;
-  html+=`<tr><th>مشتری</th><td>${o.customer}</td></tr>`;
-  html+=`<tr><th>مدل</th><td>${o.model}</td></tr>`;
-  html+=`<tr><th>تاریخ تحویل</th><td>${o.delDate}</td></tr>`;
-  html+=`<tr><th>رنگ‌کاری</th><td>${formatArray(o.paint)}</td></tr>`;
-  html+=`<tr><th>خیاطی</th><td>${formatArray(o.fab)}</td></tr>`;
-  html+=`<tr><th>نجاری</th><td>${formatArray(o.carp)}</td></tr>`;
-  html+=`<tr><th>روی‌کوبی</th><td>${formatArray(o.up)}</td></tr>`;
-  html+=`<tr><th>توضیحات تحویل</th><td>${o.delNote}</td></tr></table>`;
+  if(type==='paint') html=`<h3>رنگ‌کاری</h3>${formatArray(o.paint)}`;
+  if(type==='fab') html=`<h3>خیاطی</h3>${formatArray(o.fab)}`;
+  if(type==='carp') html=`<h3>نجاری</h3>${formatArray(o.carp)}`;
+  if(type==='up') html=`<h3>روی‌کوبی</h3>${formatArray(o.up)}`;
+  if(type==='del') html=`<h3>تحویل کالا</h3>
+  <b>شماره فاکتور:</b> ${o.invoiceNo}<br>
+  <b>نام مشتری:</b> ${o.customer}<br>
+  <b>مدل:</b> ${o.model}<br>
+  <b>تاریخ تحویل:</b> ${o.delDate}<br>
+  <b>رنگ‌کاری:</b> ${formatArray(o.paint)}<br>
+  <b>خیاطی:</b> ${formatArray(o.fab)}<br>
+  <b>نجاری:</b> ${formatArray(o.carp)}<br>
+  <b>روی‌کوبی:</b> ${formatArray(o.up)}<br>
+  <b>توضیحات تحویل:</b> ${o.delNote}<br>`;
   const out=document.getElementById('output');
-  out.innerHTML=`<h2>${o.customer} | مدل ${o.model}</h2>${html}<div style='text-align:center;margin-top:8px;'><button class='btn' onclick='printSection()'>🖨 چاپ</button></div>`;
+  out.innerHTML=`${html}<div style='text-align:center;margin-top:8px;'><button class='btn' onclick='printSection()'>🖨 چاپ</button></div>`;
   out.style.display='block';window.scrollTo(0,document.body.scrollHeight);
 }
 
