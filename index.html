@@ -1,191 +1,203 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<!DOCTYPE html><html lang="fa" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>سیستم مدیریت سفارش مبل و صندلی</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>سیستم مدیریت سفارش Matiani</title>
 <style>
-@font-face {
-  font-family: 'IranSans';
-  src: local('IranSans'), url('fonts/IRANSans.ttf') format('truetype');
-}
-
-body {
-  font-family: 'IranSans', Tahoma, sans-serif;
-  background-color: #ffffff;
-  color: #000000;
-  margin: 0;
-  padding: 0;
-}
-
-h1, h2 {
-  text-align: center;
-  color: #00ff99;
-}
-
-.container {
-  max-width: 950px;
-  margin: 20px auto;
-  background: #fff;
-  border-radius: 10px;
-  border: 2px solid #00ff99;
-  box-shadow: 0 0 10px #00ff99;
-  padding: 20px;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-table, th, td {
-  border: 1px solid #00cc88;
-}
-
-th, td {
-  padding: 8px;
-  text-align: right;
-}
-
-label {
-  display: block;
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-input, textarea {
-  width: 96%;
-  padding: 6px;
-  border-radius: 5px;
-  border: 1px solid #00cc88;
-  font-family: inherit;
-  margin-top: 4px;
-  color: #000;
-}
-
-textarea {
-  min-height: 60px;
-}
-
-.btn {
-  background: #00ff99;
-  color: black;
-  padding: 10px 14px;
-  margin: 5px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.btn:hover {
-  background: #00cc77;
-}
-
-.section {
-  border: 2px solid #00cc88;
-  border-radius: 8px;
-  margin-top: 15px;
-  padding: 10px;
-  background: #f8fff8;
-}
-
-.output {
-  border: 2px solid #00cc99;
-  border-radius: 8px;
-  margin-top: 15px;
-  padding: 10px;
-  background: #ffffff;
-  color: #000000;
-  display: none;
-}
-
-.output table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.output table, .output th, .output td {
-  border: 1px solid #00cc77;
-}
-.output th, .output td {
-  padding: 6px;
-}
-
-.hidden {
-  display: none;
-}
-
-@media (max-width:600px){
-  .container {padding:10px}
-  input,textarea {width:100%}
-}
+@font-face { font-family: 'IranSans'; src: local('IranSans'), url('fonts/IRANSans.ttf') format('truetype'); }
+body{font-family:'IranSans', Tahoma, sans-serif; background:#fff; color:#000; margin:0; padding:0}
+.header{max-width:950px;margin:18px auto;text-align:center}
+.brand{font-weight:900;font-size:20px;border:2px solid #000;padding:8px 12px;border-radius:8px;display:inline-block}
+.container{max-width:950px;margin:8px auto;background:#fff;border-radius:10px;border:2px solid #000;padding:18px}
+h1,h2{margin:6px 0;text-align:center}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.label{display:block;margin-bottom:6px;font-weight:700}
+.input, textarea, select{width:100%;padding:8px;border-radius:6px;border:1px solid #000;font-family:inherit}
+textarea{min-height:70px}
+.row{display:flex;gap:12px}
+.btn{background:#000;color:#fff;padding:10px 14px;margin:6px;border:none;border-radius:6px;cursor:pointer;font-weight:700}
+.btn:hover{opacity:0.9}
+.section{border:1px solid #000;border-radius:8px;padding:10px;background:#fafafa;margin-top:12px}
+.order-card{border:1px solid #000;padding:10px;margin-bottom:8px;border-radius:8px}
+.order-actions{margin-top:8px;display:flex;gap:6px;flex-wrap:wrap}
+.hidden{display:none}
+.output-area{border:1px solid #000;border-radius:8px;padding:10px;margin-top:12px;background:#fff}
+.thumb{max-width:120px;max-height:80px;border:1px solid #000;padding:4px;border-radius:6px}
+@media (max-width:700px){.form-grid{grid-template-columns:1fr}.row{flex-direction:column}}
 </style>
 </head>
-<body>
-
-<div class="container">
-  <h1>🛋 سیستم مدیریت سفارش مبل و صندلی</h1>
-
+<body><div class="header">
+  <div class="brand">Matiani</div>
+  <h1>🛋 سیستم مدیریت سفارش Matiani</h1>
+  <p style="margin:6px 0;color:#333">فارسی: سیستم ثبت و اشتراک سفارش مبل و صندلی — همگام‌سازی بین چند دستگاه با Firebase</p>
+</div><div class="container">
   <div id="form">
-    <table>
-      <tr>
-        <td><label>نام مشتری</label><input id="customer"></td>
-        <td><label>مدل</label><input id="model"></td>
-        <td><label>تاریخ تحویل</label><input type="date" id="delDate"></td>
-        <td><label>قیمت</label><input id="price" type="number"></td>
-      </tr>
-    </table>
-
-    <div class="section">
-      <h3>۱. رنگ‌کاری</h3>
-      <input placeholder="رنگ کار" id="paintColor">
-      <input placeholder="نوع پوشش یا لاک" id="paintFinish">
-      <input placeholder="تعداد قطعات" id="paintCount">
-      <textarea placeholder="توضیحات رنگ‌کاری" id="paintNote"></textarea>
-    </div>
-
-    <div class="section">
-      <h3>۲. خیاطی</h3>
-      <input placeholder="کد پارچه" id="fabCode">
-      <input placeholder="رنگ پارچه" id="fabColor">
-      <textarea placeholder="شرح تفصیلی پارچه، کوسن و موارد دیگر..." id="fabNote"></textarea>
-    </div>
-
-    <div class="section">
-      <h3>۳. نجاری</h3>
-      <input placeholder="مدل مبل" id="carpModel">
-      <textarea placeholder="توضیحات کار نجاری (مثلاً نوع اتصال، پایه، ساختار...)" id="carpNote"></textarea>
-    </div>
-
-    <div class="section">
-      <h3>۴. روی‌کوبی</h3>
-      <textarea placeholder="توضیحات روی‌کوبی (نوع فوم، ابر، پارچه روبان...)" id="upNote"></textarea>
-    </div>
-
-    <div class="section">
-      <h3>۵. تحویل</h3>
-      <textarea placeholder="آدرس و توضیحات تحویل" id="delNote"></textarea>
-    </div>
-
-    <button class="btn" onclick="saveOrder()">💾 ذخیره سفارش</button>
-    <button class="btn" onclick="toggleOrders()">📋 نمایش سفارش‌ها</button>
+    <div class="form-grid">
+      <div>
+        <label class="label">نام مشتری</label>
+        <input class="input" id="customer" placeholder="نام و نام خانوادگی">
+      </div><div>
+    <label class="label">مدل</label>
+    <input class="input" id="model" placeholder="مثلاً 3 نفره مدل آرام">
   </div>
 
-  <div id="orderList" class="section hidden"></div>
-  <div id="output" class="output"></div>
+  <div>
+    <label class="label">تاریخ تحویل (قابل تایپ: YYYY-MM-DD)</label>
+    <input class="input" id="delDate" placeholder="2025-12-31" pattern="\d{4}-\d{2}-\d{2}">
+  </div>
+
+  <div>
+    <label class="label">تصویر مدل (اختیاری)</label>
+    <input class="input" id="imageFile" type="file" accept="image/*">
+  </div>
 </div>
 
-<script>
-let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+<div class="section">
+  <h3>۱. رنگ‌کاری</h3>
+  <input class="input" id="paintColor" placeholder="رنگ کار">
+  <input class="input" id="paintFinish" placeholder="نوع پوشش یا لاک">
+  <input class="input" id="paintCount" placeholder="تعداد قطعات">
+  <textarea id="paintNote" placeholder="توضیحات رنگ‌کاری"></textarea>
+</div>
 
-function saveOrder() {
+<div class="section">
+  <h3>۲. خیاطی</h3>
+  <input class="input" id="fabCode" placeholder="کد پارچه">
+  <input class="input" id="fabColor" placeholder="رنگ پارچه">
+  <textarea id="fabNote" placeholder="شرح تفصیلی پارچه، کوسن و موارد دیگر..."></textarea>
+</div>
+
+<div class="section">
+  <h3>۳. نجاری</h3>
+  <input class="input" id="carpModel" placeholder="مدل مبل یا جزئیات نجاری">
+  <textarea id="carpNote" placeholder="توضیحات کار نجاری (مثلاً نوع اتصال، پایه، ساختار...)"></textarea>
+</div>
+
+<div class="section">
+  <h3>۴. روی‌کوبی</h3>
+  <textarea id="upNote" placeholder="توضیحات روی‌کوبی (نوع فوم، ابر، پارچه روبان...)"></textarea>
+</div>
+
+<div class="section">
+  <h3>۵. تحویل کالا</h3>
+  <textarea id="delNote" placeholder="آدرس و توضیحات تحویل کالا"></textarea>
+</div>
+
+<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+  <button class="btn" id="saveBtn">💾 ذخیره سفارش</button>
+  <button class="btn" id="toggleBtn">📋 نمایش سفارش‌ها</button>
+  <button class="btn" id="clearLocal">🗑 پاکسازی محلی</button>
+</div>
+
+  </div>  <div id="orderList" class="section hidden"></div>
+  <div id="output" class="output-area hidden"></div>
+</div><script>
+/*
+  فایل حاضر:
+  - طراحی فرم مرتب (دو ستون)
+  - رنگ‌ها و قاب‌ها مشکی
+  - حذف فیلد قیمت و قرار دادن تاریخ قابل تایپ
+  - آپلود تصویر مدل اضافه شد
+  - خروجی چاپ فقط همان بخش انتخاب‌شده را چاپ می‌کند
+  - همگام‌سازی با Firebase Realtime Database و Storage (در صورت قرار دادن تنظیمات)
+
+  برای فعال‌سازی Firebase: در کد زیر مقدار firebaseConfig را با تنظیمات پروژهٔ خود جایگزین کنید.
+  اگر تنظیمات وارد نشود، سیستم فقط با localStorage کار خواهد کرد.
+*/
+
+// ------------- Firebase setup (put your config here) ------------------
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  databaseURL: "https://YOUR_PROJECT.firebaseio.com",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "...",
+  appId: "..."
+};
+
+let USE_FIREBASE = false;
+let firebaseApp, database, storage;
+
+function tryInitFirebase(){
+  try{
+    if(!firebaseConfig || !firebaseConfig.apiKey || firebaseConfig.apiKey.startsWith('YOUR')){
+      console.warn('Firebase config missing or placeholder — running in local-only mode');
+      return;
+    }
+    // load sdk scripts dynamically
+    const script1 = document.createElement('script');
+    script1.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
+    script1.onload = ()=>{
+      const s2 = document.createElement('script');
+      s2.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js';
+      s2.onload = ()=>{
+        const s3 = document.createElement('script');
+        s3.src = 'https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js';
+        s3.onload = initFirebase;
+        document.head.appendChild(s3);
+      }
+      document.head.appendChild(s2);
+    }
+    document.head.appendChild(script1);
+  }catch(e){console.error('firebase init error',e)}
+}
+
+function initFirebase(){
+  try{
+    firebaseApp = firebase.initializeApp(firebaseConfig);
+    database = firebase.database();
+    storage = firebase.storage();
+    USE_FIREBASE = true;
+    console.log('Firebase initialized — realtime sync enabled');
+    startRealtimeListener();
+  }catch(e){console.error('init firebase failed',e)}
+}
+
+tryInitFirebase();
+
+// ---------------- local storage fallback ----------------
+let orders = JSON.parse(localStorage.getItem('orders') || '[]');
+
+function saveToLocal(){ localStorage.setItem('orders', JSON.stringify(orders)); }
+
+// ----------------- utility -----------------
+function $(id){return document.getElementById(id)}
+function val(id){return $(id).value.trim()}
+function clearForm(){ Array.from(document.querySelectorAll('input[type!=file], textarea')).forEach(i=>i.value=''); $('imageFile').value=''; }
+
+// ----------------- image upload -----------------
+async function uploadImage(file, pathPrefix='orders'){
+  if(!file) return null;
+  if(!USE_FIREBASE){
+    // create local object URL and return it — note: not persistent across devices
+    return URL.createObjectURL(file);
+  }
+  const filename = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9\.\-_]/g,'');
+  const ref = storage.ref().child(pathPrefix + '/' + filename);
+  const snap = await ref.put(file);
+  const url = await snap.ref.getDownloadURL();
+  return url;
+}
+
+// ----------------- save order -----------------
+async function saveOrder(){
+  const fileInput = $('imageFile');
+  const file = fileInput.files && fileInput.files[0] ? fileInput.files[0] : null;
+
+  // basic validation
+  if(!val('customer')){ alert('نام مشتری را وارد کنید'); return }
+  if(!val('model')){ alert('مدل را وارد کنید'); return }
+  // delDate is free text but we recommend YYYY-MM-DD. No hard validation to allow flexibility.
+
+  const imgUrl = await uploadImage(file);
+
   const order = {
+    id: 'o_' + Date.now(),
     customer: val('customer'),
     model: val('model'),
-    price: val('price'),
     delDate: val('delDate'),
+    image: imgUrl || '',
     paintColor: val('paintColor'),
     paintFinish: val('paintFinish'),
     paintCount: val('paintCount'),
@@ -196,103 +208,123 @@ function saveOrder() {
     carpModel: val('carpModel'),
     carpNote: val('carpNote'),
     upNote: val('upNote'),
-    delNote: val('delNote')
+    delNote: val('delNote'),
+    createdAt: Date.now()
   };
+
   orders.push(order);
-  localStorage.setItem("orders", JSON.stringify(orders));
+  saveToLocal();
+
+  if(USE_FIREBASE){
+    // write to realtime db under /orders/{id}
+    try{
+      database.ref('orders/' + order.id).set(order);
+    }catch(e){console.error('firebase write err', e)}
+  }
+
   clearForm();
-  alert("✅ سفارش ذخیره شد");
+  renderOrders();
+  alert('✅ سفارش ذخیره شد');
 }
 
-function val(id){return document.getElementById(id).value.trim();}
-
-function clearForm(){
-  document.querySelectorAll('input, textarea').forEach(el => el.value = '');
+// ----------------- realtime listener -----------------
+function startRealtimeListener(){
+  if(!USE_FIREBASE) return;
+  const ref = database.ref('orders');
+  ref.on('value', snapshot => {
+    const val = snapshot.val();
+    if(!val) return;
+    // merge remote orders with local orders (avoid duplicates)
+    const remote = Object.values(val || {});
+    const merged = {};
+    orders.concat(remote).forEach(o=>{ merged[o.id] = o; });
+    orders = Object.values(merged).sort((a,b)=>b.createdAt - a.createdAt);
+    saveToLocal();
+    renderOrders();
+  });
 }
 
+// ----------------- render -----------------
 function toggleOrders(){
-  const listDiv = document.getElementById('orderList');
+  const listDiv = $('orderList');
   listDiv.classList.toggle('hidden');
   renderOrders();
 }
 
 function renderOrders(){
-  const listDiv = document.getElementById('orderList');
-  if (orders.length === 0) {
-    listDiv.innerHTML = "<p>هیچ سفارشی ثبت نشده است.</p>";
-    return;
-  }
-  listDiv.innerHTML = orders.map((o,i)=>`
-  <div style="border:1px solid #00ff99;padding:8px;margin-bottom:8px;">
-    <b>${o.customer}</b> | مدل: ${o.model} | تاریخ تحویل: ${o.delDate} | قیمت: ${o.price} تومان<br>
-    <div style="margin-top:6px;">
-      <button class="btn" onclick="showSection(${i},'paint')">🎨 رنگ‌کاری</button>
-      <button class="btn" onclick="showSection(${i},'fab')">🧵 خیاطی</button>
-      <button class="btn" onclick="showSection(${i},'carp')">🪓 نجاری</button>
-      <button class="btn" onclick="showSection(${i},'up')">🛠 روی‌کوبی</button>
-      <button class="btn" onclick="showSection(${i},'del')">🚚 تحویل</button>
-    </div>
-  </div>`).join('');
+  const listDiv = $('orderList');
+  if(orders.length === 0){ listDiv.innerHTML = '<p>هیچ سفارشی ثبت نشده است.</p>'; return }
+  listDiv.innerHTML = orders.map((o,i)=>{
+    const imgHtml = o.image ? `<img class=\"thumb\" src=\"${o.image}\" alt=\"thumb\">` : '';
+    return `
+    <div class=\"order-card\"> 
+      <div><b>${o.customer}</b> | مدل: ${o.model} | تاریخ تحویل: ${o.delDate}</div>
+      <div style=\"margin-top:8px;\">${imgHtml}</div>
+      <div class=\"order-actions\">
+        <button class=\"btn\" onclick=\"showSection(${i},'paint')\">🎨 رنگ‌کاری</button>
+        <button class=\"btn\" onclick=\"showSection(${i},'fab')\">🧵 خیاطی</button>
+        <button class=\"btn\" onclick=\"showSection(${i},'carp')\">🪓 نجاری</button>
+        <button class=\"btn\" onclick=\"showSection(${i},'up')\">🛠 روی‌کوبی</button>
+        <button class=\"btn\" onclick=\"showSection(${i},'del')\">🚚 تحویل کالا</button>
+        <button class=\"btn\" onclick=\"shareWhatsApp(${i})\">📤 ارسال واتساپ</button>
+      </div>
+    </div>`
+  }).join('');
 }
 
+// ----------------- show section & print only that section -----------------
 function showSection(i,type){
   const o = orders[i];
-  let html="";
-  if(type==='paint') html=`
-  <h3>برگه رنگ‌کاری</h3>
-  <table>
-  <tr><th>رنگ</th><td>${o.paintColor}</td></tr>
-  <tr><th>پوشش</th><td>${o.paintFinish}</td></tr>
-  <tr><th>تعداد قطعات</th><td>${o.paintCount}</td></tr>
-  <tr><th>توضیحات</th><td>${o.paintNote}</td></tr>
-  </table>`;
+  let html = '';
+  if(type==='paint') html = `\n  <h2>برگه رنگ‌کاری — ${o.customer} | ${o.model}</h2>\n  <table>\n  <tr><th>رنگ</th><td>${o.paintColor}</td></tr>\n  <tr><th>پوشش</th><td>${o.paintFinish}</td></tr>\n  <tr><th>تعداد قطعات</th><td>${o.paintCount}</td></tr>\n  <tr><th>توضیحات</th><td>${o.paintNote}</td></tr>\n  </table>`;
+  if(type==='fab') html = `\n  <h2>برگه خیاطی — ${o.customer} | ${o.model}</h2>\n  <table>\n  <tr><th>کد پارچه</th><td>${o.fabCode}</td></tr>\n  <tr><th>رنگ پارچه</th><td>${o.fabColor}</td></tr>\n  <tr><th>توضیحات</th><td>${o.fabNote}</td></tr>\n  </table>`;
+  if(type==='carp') html = `\n  <h2>برگه نجاری — ${o.customer} | ${o.model}</h2>\n  <table>\n  <tr><th>مدل</th><td>${o.carpModel}</td></tr>\n  <tr><th>توضیحات</th><td>${o.carpNote}</td></tr>\n  </table>`;
+  if(type==='up') html = `\n  <h2>برگه روی‌کوبی — ${o.customer} | ${o.model}</h2>\n  <table>\n  <tr><th>توضیحات</th><td>${o.upNote}</td></tr>\n  </table>`;
+  if(type==='del') html = `\n  <h2>برگه تحویل کالا — ${o.customer} | ${o.model}</h2>\n  <table>\n  <tr><th>مشتری</th><td>${o.customer}</td></tr>\n  <tr><th>مدل</th><td>${o.model}</td></tr>\n  <tr><th>تاریخ تحویل</th><td>${o.delDate}</td></tr>\n  <tr><th>آدرس/توضیحات تحویل</th><td>${o.delNote}</td></tr>\n  <tr><th>رنگ‌کاری</th><td>${o.paintColor} — ${o.paintFinish} — ${o.paintNote}</td></tr>\n  <tr><th>خیاطی</th><td>${o.fabCode} — ${o.fabColor} — ${o.fabNote}</td></tr>\n  <tr><th>نجاری</th><td>${o.carpModel} — ${o.carpNote}</td></tr>\n  <tr><th>روی‌کوبی</th><td>${o.upNote}</td></tr>\n  </table>`;
 
-  if(type==='fab') html=`
-  <h3>برگه خیاطی</h3>
-  <table>
-  <tr><th>کد پارچه</th><td>${o.fabCode}</td></tr>
-  <tr><th>رنگ پارچه</th><td>${o.fabColor}</td></tr>
-  <tr><th>توضیحات</th><td>${o.fabNote}</td></tr>
-  </table>`;
+  if(o.image) html += `\n  <div style=\"margin-top:8px;\">\n    <img src=\"${o.image}\" style=\"max-width:320px;max-height:240px;border:1px solid #000;padding:6px;border-radius:6px\">\n  </div>`;
 
-  if(type==='carp') html=`
-  <h3>برگه نجاری</h3>
-  <table>
-  <tr><th>مدل</th><td>${o.carpModel}</td></tr>
-  <tr><th>توضیحات</th><td>${o.carpNote}</td></tr>
-  </table>`;
-
-  if(type==='up') html=`
-  <h3>برگه روی‌کوبی</h3>
-  <table>
-  <tr><th>توضیحات</th><td>${o.upNote}</td></tr>
-  </table>`;
-
-  if(type==='del') html=`
-  <h3>برگه تحویل</h3>
-  <table>
-  <tr><th>مشتری</th><td>${o.customer}</td></tr>
-  <tr><th>مدل</th><td>${o.model}</td></tr>
-  <tr><th>تاریخ تحویل</th><td>${o.delDate}</td></tr>
-  <tr><th>آدرس/توضیحات</th><td>${o.delNote}</td></tr>
-  </table>`;
-
-  const out=document.getElementById('output');
-  out.innerHTML=`
-  <h2>${o.customer} | مدل ${o.model}</h2>${html}
-  <div style="text-align:center;margin-top:8px;">
-    <button class='btn' onclick='window.print()'>🖨 چاپ</button>
-    <button class='btn' onclick='sendWhatsApp(${i},"${type}")'>📤 ارسال واتساپ</button>
-  </div>`;
-  out.style.display='block';
-  window.scrollTo(0,document.body.scrollHeight);
+  const out = $('output');
+  out.innerHTML = html + `\n  <div style=\"text-align:center;margin-top:8px;\">\n    <button class='btn' onclick='printSection(${i},"${type}")'>🖨 چاپ</button>\n    <button class='btn' onclick='closeOutput()'>✖ بستن</button>\n  </div>`;
+  out.classList.remove('hidden');
+  window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
 }
 
-function sendWhatsApp(i,type){
-  const o=orders[i];
-  const msg=encodeURIComponent(`برگه ${type} | مشتری: ${o.customer} | مدل: ${o.model}`);
-  window.open(`https://wa.me/?text=${msg}`,'_blank');
-}
+function closeOutput(){ $('output').classList.add('hidden'); }
+
+function printSection(i,type){
+  const o = orders[i];
+  // build a minimal HTML page with just the section we want
+  let content = '';
+  if(type==='paint') content = `<h2>برگه رنگ‌کاری — ${o.customer} | ${o.model}</h2>` +
+    `<p><b>رنگ:</b> ${o.paintColor}</p><p><b>پوشش:</b> ${o.paintFinish}</p><p><b>تعداد:</b> ${o.paintCount}</p><p><b>توضیحات:</b> ${o.paintNote}</p>`;
+  if(type==='fab') content = `<h2>برگه خیاطی — ${o.customer} | ${o.model}</h2>` +
+    `<p><b>کد پارچه:</b> ${o.fabCode}</p><p><b>رنگ پارچه:</b> ${o.fabColor}</p><p><b>توضیحات:</b> ${o.fabNote}</p>`;
+  if(type==='carp') content = `<h2>برگه نجاری — ${o.customer} | ${o.model}</h2>` +
+    `<p><b>مدل:</b> ${o.carpModel}</p><p><b>توضیحات:</b> ${o.carpNote}</p>`;
+  if(type==='up') content = `<h2>برگه روی‌کوبی — ${o.customer} | ${o.model}</h2>` +
+    `<p><b>توضیحات:</b> ${o.upNote}</p>`;
+  if(type==='del') content = `<h2>برگه تحویل کالا — ${o.customer} | ${o.model}</h2>` +
+    `<p><b>تاریخ تحویل:</b> ${o.delDate}</p><p><b>آدرس:</b> ${o.delNote}</p>` +
+    `<hr><p><b>جمع توضیحات:</b></p><p>رنگ‌کاری: ${o.paintColor} — ${o.paintFinish} — ${o.paintNote}</p>` +
+    `<p>خیاطی: ${o.fabCode} — ${o.fabColor} — ${o.fabNote}</p>` +
+    `<p>نجاری: ${o.carpModel} — ${o.carpNote}</p>` +
+    `<p>روی‌کوبی: ${o.upNote}</p>`;
+
+  if(o.image) content += `<div style=\"margin-top:10px\"><img src=\"${o.image}\" style=\"max-width:560px;max-height:420px;border:1px solid #000;padding:6px;border-radius:6px\"></div>`;
+
+  const win = window.open('','_blank');
+  win.document.write('<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><title>چاپ</title>');
+  win.document.write('<style>body{font-family:Tahoma, Arial, Helvetica;direction:rtl;padding:16px;color:#000}h2{margin-bottom:6px}table{border-collapse:collapse}td,th{padding:6px;border:1px solid #000}</style>');win.document.write('</head><body>'); win.document.write('<div style="border:2px solid #000;padding:12px;border-radius:8px">'); win.document.write('<div style="text-align:center;margin-bottom:8px;font-weight:800">Matiani</div>'); win.document.write(content); win.document.write('</div></body></html>'); win.document.close(); win.focus(); setTimeout(()=>{ win.print(); win.close(); },500); }
+
+function shareWhatsApp(i){ const o = orders[i]; const text = encodeURIComponent(سفارش: ${o.customer} | مدل: ${o.model} | تحویل: ${o.delDate}); window.open(https://wa.me/?text=${text},'_blank'); }
+
+// ----------------- wire buttons ----------------- $('saveBtn').addEventListener('click', ()=>{ saveOrder(); }); $('toggleBtn').addEventListener('click', ()=>{ toggleOrders(); }); $('clearLocal').addEventListener('click', ()=>{ if(confirm('پاکسازی محلی سفارش‌ها انجام شود؟ این فقط localStorage را پاک می‌کند.')){ localStorage.removeItem('orders'); orders=[]; renderOrders(); alert('localStorage پاک شد') }});
+
+// ----------------- initialize ----------------- renderOrders();
+
+// If Firebase is already initialized by user action elsewhere, start listener too. if(window.firebase && window.firebase.apps && window.firebase.apps.length>0){ initFirebase(); }
+
 </script>
 </body>
 </html>
